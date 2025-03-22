@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Compass, CircleOff, TrendingUp, TrendingDown, Gauge } from 'lucide-react';
+import { Compass, CircleOff, TrendingUp, TrendingDown, Gauge, LineChart as LineChartIcon, FileText, Users, ChartLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 
@@ -162,7 +162,7 @@ const MarketConditions = () => {
           
           <div>
             <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
-              <LineChart className="h-4 w-4" />
+              <LineChartIcon className="h-4 w-4" />
               Macroeconomic Indicators
             </h3>
             <div className="space-y-0.5">

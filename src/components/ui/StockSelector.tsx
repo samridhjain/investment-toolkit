@@ -88,11 +88,14 @@ const StockSelector = ({ selectedStocks, onStocksChange }: StockSelectorProps) =
             />
             <CommandEmpty>No stocks found.</CommandEmpty>
             <CommandGroup className="max-h-64 overflow-auto">
-              {filteredStocks.map((stock) => (
+              {filteredStocks && filteredStocks.map((stock) => (
                 <CommandItem
                   key={stock.symbol}
                   value={stock.symbol}
-                  onSelect={() => toggleStock(stock)}
+                  onSelect={() => {
+                    toggleStock(stock);
+                    setOpen(false);
+                  }}
                   className="flex items-center justify-between"
                 >
                   <div>
