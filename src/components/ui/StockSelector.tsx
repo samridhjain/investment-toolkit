@@ -1,16 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { CheckIcon, ChevronsUpDown, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-
-type Stock = {
-  symbol: string;
-  name: string;
-};
+import { Stock } from '@/models/market';
+import { fetchAvailableStocks } from '@/services/marketApi';
+import { allStocks } from '@/mocks/marketData'; // Fallback for development
 
 type StockSelectorProps = {
   selectedStocks: Stock[];
@@ -20,25 +18,29 @@ type StockSelectorProps = {
 const StockSelector = ({ selectedStocks, onStocksChange }: StockSelectorProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [stocks, setStocks] = useState<Stock[]>(allStocks);
+  const [loading, setLoading] = useState(false);
   
-  // Mock data for stocks - would be fetched from API in a real app
-  const stocks: Stock[] = [
-    { symbol: 'AAPL', name: 'Apple Inc.' },
-    { symbol: 'MSFT', name: 'Microsoft Corp.' },
-    { symbol: 'GOOGL', name: 'Alphabet Inc.' },
-    { symbol: 'AMZN', name: 'Amazon.com Inc.' },
-    { symbol: 'META', name: 'Meta Platforms Inc.' },
-    { symbol: 'TSLA', name: 'Tesla Inc.' },
-    { symbol: 'NVDA', name: 'NVIDIA Corp.' },
-    { symbol: 'JPM', name: 'JPMorgan Chase & Co.' },
-    { symbol: 'BAC', name: 'Bank of America Corp.' },
-    { symbol: 'WMT', name: 'Walmart Inc.' },
-    { symbol: 'DIS', name: 'The Walt Disney Co.' },
-    { symbol: 'PFE', name: 'Pfizer Inc.' },
-    { symbol: 'NKE', name: 'Nike Inc.' },
-    { symbol: 'KO', name: 'The Coca-Cola Co.' },
-    { symbol: 'MCD', name: 'McDonald\'s Corp.' },
-  ];
+  // Fetch available stocks on component mount
+  useEffect(() => {
+    const loadStocks = async () => {
+      setLoading(true);
+      try {
+        const availableStocks = await fetchAvailableStocks();
+        if (availableStocks.length > 0) {
+          setStocks(availableStocks);
+        }
+      } catch (error) {
+        console.error("Error loading stocks:", error);
+        // Fallback to local mock data if API fails
+        setStocks(allStocks);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadStocks();
+  }, []);
   
   const isStockSelected = (stock: Stock) => 
     selectedStocks.some(selected => selected.symbol === stock.symbol);
@@ -71,10 +73,12 @@ const StockSelector = ({ selectedStocks, onStocksChange }: StockSelectorProps) =
             role="combobox"
             aria-expanded={open}
             className="w-full justify-between h-10"
+            disabled={loading}
           >
-            {selectedStocks.length > 0 
-              ? `${selectedStocks.length} stocks selected`
-              : "Select stocks..."}
+            {loading ? "Loading stocks..." : 
+              selectedStocks.length > 0 
+                ? `${selectedStocks.length} stocks selected`
+                : "Select stocks..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

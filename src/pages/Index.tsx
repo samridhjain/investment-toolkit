@@ -10,10 +10,11 @@ import PortfolioOverview from '@/components/dashboard/PortfolioOverview';
 import NewsHighlights from '@/components/dashboard/NewsHighlights';
 import EarningsReport from '@/components/dashboard/EarningsReport';
 import StockSelector from '@/components/ui/StockSelector';
-import { fetchMarketIndices, fetchPortfolioStocks, fetchMarketNews, fetchEarningsReports } from '@/utils/marketData';
+import { fetchMarketIndices, fetchPortfolioStocks, fetchMarketNews, fetchEarningsReports } from '@/services/marketApi';
 import { useToast } from '@/components/ui/use-toast';
+import { Stock } from '@/models/market';
 
-const DEFAULT_STOCKS = [
+const DEFAULT_STOCKS: Stock[] = [
   { symbol: 'AAPL', name: 'Apple Inc.' },
   { symbol: 'MSFT', name: 'Microsoft Corp.' },
   { symbol: 'GOOGL', name: 'Alphabet Inc.' },
@@ -31,7 +32,7 @@ const Index = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      // In a real app, these would be API calls to fetch the latest data
+      // Fetch all data in parallel
       await Promise.all([
         fetchMarketIndices(),
         fetchPortfolioStocks(stocks.map(s => s.symbol)),
