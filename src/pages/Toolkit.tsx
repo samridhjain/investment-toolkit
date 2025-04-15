@@ -2,13 +2,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LineChart, Shield, Compass, TestTube, FileText, Users, ChartLine } from 'lucide-react';
+import { ArrowLeft, LineChart, Shield, Compass, Users, ChartLine } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import TechnicalAnalysis from '@/components/toolkit/TechnicalAnalysis';
 import RiskAnalysis from '@/components/toolkit/RiskAnalysis';
 import MarketConditions from '@/components/toolkit/MarketConditions';
-import TestBeforeInvest from '@/components/toolkit/TestBeforeInvest';
 import AnalysisCard from '@/components/ui/AnalysisCard';
 import StockSelector from '@/components/ui/StockSelector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -97,13 +96,6 @@ const Toolkit = () => {
                 description="Assess overall market sentiment, macroeconomic indicators, and sector trends affecting your investments."
                 onClick={() => handleRunAnalysis('market')}
               />
-              
-              <AnalysisCard
-                title="Test Before Invest"
-                icon={<TestTube className="h-4 w-4 text-market-indigo" />}
-                description="Simulate investment scenarios with different parameters to visualize potential outcomes before committing capital."
-                onClick={() => handleRunAnalysis('test')}
-              />
             </div>
           </TabsContent>
           
@@ -125,7 +117,6 @@ const Toolkit = () => {
                 {activeAnalysis === 'technical' && <TechnicalAnalysis />}
                 {activeAnalysis === 'risk' && <RiskAnalysis />}
                 {activeAnalysis === 'market' && <MarketConditions />}
-                {activeAnalysis === 'test' && <TestBeforeInvest />}
               </div>
             )}
           </TabsContent>
