@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LineChart, Shield, Compass, Users, ChartLine } from 'lucide-react';
+import { ArrowLeft, LineChart, Shield, Compass, Heart, Users, ChartLine } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import TechnicalAnalysis from '@/components/toolkit/TechnicalAnalysis';
 import RiskAnalysis from '@/components/toolkit/RiskAnalysis';
 import MarketConditions from '@/components/toolkit/MarketConditions';
+import PortfolioHealthTracker from '@/components/toolkit/PortfolioHealthTracker';
 import AnalysisCard from '@/components/ui/AnalysisCard';
 import StockSelector from '@/components/ui/StockSelector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -96,6 +97,13 @@ const Toolkit = () => {
                 description="Assess overall market sentiment, macroeconomic indicators, and sector trends affecting your investments."
                 onClick={() => handleRunAnalysis('market')}
               />
+              
+              <AnalysisCard
+                title="Portfolio Health Tracker"
+                icon={<Heart className="h-4 w-4 text-red-500" />}
+                description="Monitor your portfolio's health metrics with WHOOP-style tracking and get actionable recommendations for optimization."
+                onClick={() => handleRunAnalysis('health')}
+              />
             </div>
           </TabsContent>
           
@@ -117,6 +125,7 @@ const Toolkit = () => {
                 {activeAnalysis === 'technical' && <TechnicalAnalysis />}
                 {activeAnalysis === 'risk' && <RiskAnalysis />}
                 {activeAnalysis === 'market' && <MarketConditions />}
+                {activeAnalysis === 'health' && <PortfolioHealthTracker />}
               </div>
             )}
           </TabsContent>
